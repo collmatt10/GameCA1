@@ -15,7 +15,7 @@ class Menu extends Phaser.Scene { //super class for main menu
     }
 
     create() {
-
+        score = 0;
         let menubg = this.add.sprite(0, 0, 'Menu');
         let button = this.add.sprite(0, 50, 'button');
 
@@ -23,7 +23,7 @@ class Menu extends Phaser.Scene { //super class for main menu
         button.setOrigin(0, 0);
 
         button.setInteractive();
-        button.on('pointerdown', () => this.scene.start('Game'));
+        button.on('pointerdown', () => this.scene.start('Game'), score =0);
     }
 }
 
@@ -48,12 +48,19 @@ class gameoverScene extends Phaser.Scene { //super clas for the gameover scene
 
         let menubg2 = this.add.sprite(0, 0, 'gameoverScene');
         let button = this.add.sprite(0, 50, 'button');
-
         menubg2.setOrigin(0, 0);
         button.setOrigin(0, 0);
 
         button.setInteractive();
-        button.on('pointerdown', () => this.scene.start('Game'));
+        button.on('pointerdown', () => this.scene.start('Menu'));
+        
+          scoreText = this.add.text(25, 175, 'Score : '+score, {
+        
+              
+        fontSize: '32px',
+        fill: 'black'
+    });
+
 
     }
 }
@@ -193,8 +200,6 @@ gameScene.create = function () {
 
     gameScene.physics.add.collider(ground, player, enemy);
 
-
-
     this.enemies = this.add.group({ //group for the enemies
         key: 'enemy',
         repeat: 100,
@@ -232,6 +237,7 @@ gameScene.create = function () {
 
 
 }
+
 
 gameScene.getScore = function () { //for loop for the score
     score++
@@ -299,9 +305,7 @@ gameScene.gameOver = function () {
     // player alive flag set to  dead
     this.isPlayerAlive = false;
     soundName.destroy();
-    /*  score.destroy();*/
-
-
+ 
     //replace this.scene.restart with a camera Shake effect
     this.cameras.main.shake(500);
 
@@ -313,8 +317,10 @@ gameScene.gameOver = function () {
 
     // restart game
     this.time.delayedCall(500, function () {
+        
         this.scene.start('gameoverScene');
     }, [], this);
+   /* score.destroy();*/
 
 }
 
@@ -345,3 +351,16 @@ let config = {
 
 // create a new game, pass the configuration
 let game = new Phaser.Game(config);
+
+
+
+
+
+
+
+
+
+
+
+
+
